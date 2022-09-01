@@ -14,4 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 const userRouter = require("./routers/user");
 app.use("/users", userRouter);
 
+// const postRouter = require("./routers/post");
+// app.use("/users/:userId/posts", postRouter);
+
 module.exports = app;

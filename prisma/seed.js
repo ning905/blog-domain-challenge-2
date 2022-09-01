@@ -40,7 +40,7 @@ async function createPost(user) {
       content: "This is a post.",
       imageUrl: "https://www.starbucks.com",
       publishedAt: new Date(),
-      user: { connect: { id: user.id } },
+      author: { connect: { id: user.id } },
       categories: {
         create: [{ name: "first-post" }, { name: "personal" }],
       },
@@ -52,12 +52,12 @@ async function createPost(user) {
       },
     },
     include: {
-      user: true,
+      author: true,
       categories: true,
       comments: true,
     },
   });
-  console.log("Post created: " + JSON.stringify(post));
+  console.log("Post created: ", post);
   return post;
 }
 
@@ -69,7 +69,7 @@ async function createLinkedComment(user, post) {
       post: { connect: { id: post.id } },
     },
   });
-  console.log("Parent comment created: " + JSON.stringify(parent));
+  console.log("Parent comment created: ", parent);
 
   const child = await prisma.comment.create({
     data: {
@@ -79,7 +79,7 @@ async function createLinkedComment(user, post) {
       post: { connect: { id: post.id } },
     },
   });
-  console.log("Child comment created: " + JSON.stringify(child));
+  console.log("Child comment created: ", child);
 }
 
 main()
