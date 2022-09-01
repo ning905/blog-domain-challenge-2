@@ -1,4 +1,4 @@
-// require(".env").config();
+require("dotenv").config();
 const app = require("./server.js");
 
 const port = 4040;

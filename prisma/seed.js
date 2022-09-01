@@ -74,7 +74,7 @@ async function createLinkedComment(user, post) {
   const child = await prisma.comment.create({
     data: {
       content: "This is a child comment.",
-      parentId: parent.id,
+      parent: { connect: { id: parent.id } },
       user: { connect: { id: user.id } },
       post: { connect: { id: post.id } },
     },
