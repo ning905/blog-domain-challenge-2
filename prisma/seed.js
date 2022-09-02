@@ -5,6 +5,7 @@ async function main() {
   const user = await createUser();
   const post = await createPost(user);
   createLinkedComment(user, post);
+  createLike(user, post);
 }
 
 async function createUser() {
@@ -28,7 +29,7 @@ async function createUser() {
     },
   });
 
-  console.log("User created: " + JSON.stringify(user));
+  console.log("User created: ", user);
 
   return user;
 }
@@ -80,6 +81,20 @@ async function createLinkedComment(user, post) {
     },
   });
   console.log("Child comment created: ", child);
+}
+
+async function createLike(user, post) {
+  const like = await prisma.like.create({
+    data: {
+      users: { connect: { id: user.id } },
+      posts: { connect: { id: post.id } },
+    },
+    include: {
+      users: true,
+      posts: true,
+    },
+  });
+  console.log("Like created", like);
 }
 
 main()
