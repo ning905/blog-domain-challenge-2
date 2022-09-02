@@ -17,4 +17,7 @@ app.use("/users", userRouter);
 const postRouter = require("./routers/post");
 app.use("/posts", postRouter);
 
+const categoryRouter = require("./routers/category");
+app.use("/categories", categoryRouter);
+
 module.exports = app;

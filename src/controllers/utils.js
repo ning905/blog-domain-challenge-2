@@ -9,6 +9,8 @@ const message = {
   postNotExists: "Post with that id does not exist",
   userOrPostNotExists: "User / post does not exist",
   postOrCommentNoExists: "Post / comment with that id does not exist",
+  categoryExists: "Category with that name already exists",
+  categoryNotExists: "Category with that id does not exists",
 };
 
 function checkMissingFields(fields) {
