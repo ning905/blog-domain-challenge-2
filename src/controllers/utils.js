@@ -56,12 +56,8 @@ function buildUpdateCategoryClause(post, newCategories) {
     disconnect: [],
     connectOrCreate: [],
   };
-  console.log("post :", post);
-  let existingCategories = [];
-  if (post.categories) {
-    existingCategories = post.categories.map((category) => category.name);
-  }
-  console.log("existing categories :", existingCategories);
+
+  const existingCategories = post.categories.map((category) => category.name);
 
   for (const category of newCategories) {
     if (existingCategories.includes(category.name)) {
@@ -78,6 +74,10 @@ function buildUpdateCategoryClause(post, newCategories) {
   return clause;
 }
 
+function updateQuery(query, newQuery) {
+  Object.keys(newQuery).forEach((key) => (query[key] = newQuery[key]));
+}
+
 module.exports = {
   message,
   checkFields,
@@ -86,4 +86,5 @@ module.exports = {
   getUserPosts,
   userOwnPost,
   buildUpdateCategoryClause,
+  updateQuery,
 };

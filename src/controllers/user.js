@@ -183,7 +183,10 @@ const updatePost = async (req, res) => {
   }
 
   try {
-    const findPost = await prisma.post.findUnique({ where: { id: postId } });
+    const findPost = await prisma.post.findUnique({
+      where: { id: postId },
+      include: { categories: true },
+    });
     const categoriesUpdateClause = buildUpdateCategoryClause(
       findPost,
       categories
@@ -221,6 +224,27 @@ const updatePost = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  const userId = Number(req.params.userId);
+  const postId = Number(req.params.postId);
+
+  const userPosts = await getUserPosts(userId);
+  if (!userOwnPost(userPosts, postId)) {
+    return res.status(404).json({ error: message.userOrPostNotExists });
+  }
+
+  const post = await prisma.post.delete({
+    where: { id: postId },
+    include: {
+      author: true,
+      comments: true,
+      categories: true,
+    },
+  });
+
+  res.status(201).json({ post });
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -228,4 +252,5 @@ module.exports = {
   createPost,
   getPosts,
   updatePost,
+  deletePost,
 };
