@@ -4,6 +4,7 @@ const {
   checkMissingFields,
   message,
   postOwnComment,
+  buildPublishedClause,
 } = require("./utils");
 const prisma = new PrismaClient();
 
@@ -15,9 +16,13 @@ const getPosts = async (req, res) => {
   };
   if (req.query) {
     updateQuery(query, req.query);
+    query.published = buildPublishedClause(query);
   }
 
   const posts = await prisma.post.findMany({
+    where: {
+      publishedAt: query.published,
+    },
     skip: Number(query.perPage) * (Number(query.page) - 1),
     take: Number(query.perPage),
     orderBy: {

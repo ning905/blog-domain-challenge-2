@@ -91,6 +91,18 @@ async function postOwnComment(commentId, postId) {
   });
 }
 
+function buildPublishedClause(query) {
+  let clause = undefined;
+  if (query.hasOwnProperty("published")) {
+    if (query.published === "true") {
+      clause = { lt: new Date() };
+    } else {
+      clause = { gt: new Date() };
+    }
+  }
+  return clause;
+}
+
 module.exports = {
   message,
   checkMissingFields,
@@ -101,4 +113,5 @@ module.exports = {
   buildUpdateCategoryClause,
   updateQuery,
   postOwnComment,
+  buildPublishedClause,
 };
