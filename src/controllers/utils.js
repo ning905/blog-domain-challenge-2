@@ -6,10 +6,12 @@ const message = {
   userExists: "A user with the provided username/email already exists",
   userNotExists: "A user with that id does not exist",
   postExists: "A post with the provided title already exists",
+  postNotExists: "Post with that id does not exist",
   userOrPostNotExists: "User / post does not exist",
+  postOrCommentNoExists: "Post / comment with that id does not exist",
 };
 
-function checkFields(fields) {
+function checkMissingFields(fields) {
   const missingFields = fields.filter((fields) => !fields);
   return missingFields.length;
 }
@@ -78,13 +80,23 @@ function updateQuery(query, newQuery) {
   Object.keys(newQuery).forEach((key) => (query[key] = newQuery[key]));
 }
 
+async function postOwnComment(commentId, postId) {
+  return await prisma.comment.findFirst({
+    where: {
+      id: commentId,
+      postId: postId,
+    },
+  });
+}
+
 module.exports = {
   message,
-  checkFields,
+  checkMissingFields,
   convertPostTime,
   buildCreateOrConnectClause,
   getUserPosts,
   userOwnPost,
   buildUpdateCategoryClause,
   updateQuery,
+  postOwnComment,
 };

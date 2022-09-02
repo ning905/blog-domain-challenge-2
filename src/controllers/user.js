@@ -1,6 +1,6 @@
 const { PrismaClient, Prisma } = require("@prisma/client");
 const {
-  checkFields,
+  checkMissingFields,
   message,
   buildCreateOrConnectClause,
   convertPostTime,
@@ -15,7 +15,7 @@ const createUser = async (req, res) => {
     req.body;
 
   if (
-    checkFields([
+    checkMissingFields([
       username,
       email,
       password,
@@ -119,7 +119,7 @@ const createPost = async (req, res) => {
   convertPostTime(req.body);
   const { title, content, imageUrl, publishedAt, categories } = req.body;
 
-  if (checkFields([title, content, imageUrl, publishedAt, categories])) {
+  if (checkMissingFields([title, content, imageUrl, publishedAt, categories])) {
     return res.status(400).json({ error: message.missingFields });
   }
 
